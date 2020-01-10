@@ -1,2 +1,4 @@
 ./pkg/mod
 ./pkg/mod/*
+./pkg/mod/
+
