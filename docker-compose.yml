@@ -13,19 +13,19 @@ services:
     ports:
       - "33060:3306"         
       
-  # redis-svc:
-  #   image: redis:alpine
-  #   ports:
-  #     - "6399:6379"
+  redis-svc:
+    image: redis:alpine
+    ports:
+      - "63790:6379"
   
-  # rabbitmq-svc:
-  #   image: rabbitmq:3-management
-  #   environment:
-  #     - RABBITMQ_DEFAULT_USER=user
-  #     - RABBITMQ_DEFAULT_PASS=password
-  #   ports:
-  #     - "25672:15672"
-  #     - "5622:5672"
+  rabbitmq-svc:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - "25672:15672"
+      - "56720:5672"
 
   gotem:
     image: gotem:latest
@@ -33,7 +33,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "8080:8080"
+      - "8080:1323"      
     depends_on:
       - mysql-svc
       # - redis-svc
@@ -41,14 +41,15 @@ services:
     volumes:
       - "./:/go/src/github.com/bondhan/gotem"
     # entrypoint: >
-    #   /bin/sh -c "
-    #    ./wait-for-it.sh mysql-svc:33060 -- echo "db is up";
+    #   /bin/bash -c "
+    #    ./wait-for-it.sh -t 30 mysql-svc:33060 -- echo 'db is up';
     #   "
-    # entrypoint: >
-    #   /bin/sh -c "
-    #     wait-for-it.sh 
-    #   "
-    command: ["./wait-for-it.sh", "mysql-svc:33060", "--", "echo", "db is up"]    
+    # command: ["./wait-for-it.sh", "localhost:33060", "--", "echo", "'db is up'"]
+    entrypoint: >
+      /bin/bash -c "
+        echo "optimistic wait for 15 seconds"
+        sleep 15;
+      "
 
 volumes:
     mysql-data:

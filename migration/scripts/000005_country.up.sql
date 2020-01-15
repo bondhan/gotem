@@ -1,11 +1,10 @@
-CREATE TABLE `m_seller` (
+CREATE TABLE `m_country` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `zipcode` int(10) unsigned NULL,
+  `country_name` varchar(6) NOT NULL,
+  `country_code` varchar(6) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `m_seller_deleted_at` (`deleted_at`)
+  KEY `m_country_deleted_at` (`deleted_at`)
 ) ENGINE = InnoDB DEFAULT CHARSET = latin1;

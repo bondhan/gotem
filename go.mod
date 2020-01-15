@@ -3,6 +3,7 @@ module github.com/bondhan/gotem
 go 1.13
 
 require (
+	github.com/guregu/null v3.4.0+incompatible
 	github.com/jinzhu/gorm v1.9.12
 	github.com/joho/godotenv v1.3.0
 	github.com/labstack/echo v3.3.10+incompatible

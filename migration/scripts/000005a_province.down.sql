@@ -1,6 +1,6 @@
 
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE `m_seller`;
+DROP TABLE `m_province`;
 
 SET FOREIGN_KEY_CHECKS=1;

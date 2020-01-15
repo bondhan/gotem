@@ -11,7 +11,7 @@ import (
 func Init() {
 
 	//init the log
-	driver.NewLogDriver(os.Getenv("LOG_NAME"), log.DebugLevel).InitLog()
+	driver.NewLogDriver(os.Getenv("LOG_NAME"), log.TraceLevel).InitLog()
 
 	//init database
 	mysql := driver.NewDbDriver(os.Getenv("MYSQL_DSN"), "mysql")
