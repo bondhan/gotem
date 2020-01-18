@@ -7,7 +7,8 @@ CREATE TABLE `m_buyer` (
   `mobile` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `zipcode` int(10) unsigned NULL,
+  `zipcode_id` int(10) unsigned NULL,
   PRIMARY KEY (`id`),
-  KEY `m_buyer_deleted_at` (`deleted_at`)
+  KEY `m_buyer_deleted_at` (`deleted_at`),
+  CONSTRAINT `fk_m_buyer_zip_code` FOREIGN KEY (`zipcode_id`) REFERENCES `m_zipcode` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
