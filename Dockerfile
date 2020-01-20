@@ -2,8 +2,19 @@ FROM golang:1.13-alpine AS build-env
 
 LABEL maintainer="bondhan novandy<bondhan.novandy@gmail.com>"
 
-ENV TZ=Asia/Jakarta
 ENV GO111MODULE=on
+ENV PROJECT=src/github.com/bondhan/gotem
+
+COPY . $GOPATH/$PROJECT
+WORKDIR $GOPATH/$PROJECT
+
+RUN cd ./cmd/gotem/ && go mod download && go build -o $GOPATH/$PROJECT/gotem main.go
+
+
+# clean container
+FROM alpine
+
+ENV TZ=Asia/Jakarta
 
 RUN apk update && apk upgrade
 RUN apk add --no-cache --virtual .build-deps --no-progress -q \
@@ -13,22 +24,15 @@ RUN apk add --no-cache --virtual .build-deps --no-progress -q \
     tzdata && \
     cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install dep if needed
-# ENV DEP_VERSION="0.4.1"
-# RUN curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o $GOPATH/bin/dep
-# RUN chmod +x $GOPATH/bin/dep
-# RUN dep ensure
-
-COPY . $GOPATH/src/github.com/bondhan/gotem
-WORKDIR $GOPATH/src/github.com/bondhan/gotem
-
-RUN cd ./cmd/gotem/ && go mod download && go build -o /app/gotem main.go
-
-FROM alpine
-
 WORKDIR /app
-COPY --from=build-env $GOPATH/src/github.com/bondhan/gotem /app/gotem
+
+COPY --from=build-env /go/src/github.com/bondhan/gotem/gotem /app/gotem
+COPY --from=build-env /go/src/github.com/bondhan/gotem/.env /app/.env
+COPY --from=build-env /go/src/github.com/bondhan/gotem/wait-for-it.sh /app/wait-for-it.sh
+
+CMD ./wait-for-it.sh --host=db --port=3306 --timeout=60 -- ./gotem
 
 EXPOSE 1323
 
-CMD ["./gotem"]
+# CMD ["./gotem"]
+

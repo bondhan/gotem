@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/bondhan/gotem/internal/driver"
@@ -18,6 +19,7 @@ func Init() {
 	db, err := mysql.ConnectDatabase()
 
 	if err != nil {
+		fmt.Println(os.Getenv("MYSQL_DSN"))
 		log.Error(err)
 		os.Exit(-1)
 	}
