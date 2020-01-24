@@ -11,23 +11,38 @@ services:
     volumes:
       - "mysql-data:/var/lib/mysql"
     ports:
-      - "3306:3306"   
-    # networks:
-    #   - app-network      
-      
-  # redis-svc:
-  #   image: redis:alpine
-  #   ports:
-  #     - "63790:6379"
-  
-  # rabbitmq-svc:
-  #   image: rabbitmq:3-management
+      - "33060:3306"   
+   
+  # postgres-svc:
+  #   image: postgres:12.1
+  #   restart: always
   #   environment:
-  #     - RABBITMQ_DEFAULT_USER=user
-  #     - RABBITMQ_DEFAULT_PASS=password
+  #     - POSTGRES_USER=root
+  #     - POSTGRES_PASSWORD=root
+  #     - POSTGRES_DB=gotem_db
+  #   volumes:
+  #     - postgresql:/var/lib/postgresql
+  #     - postgresql_data:/var/lib/postgresql/data
+  
+  # adminer:
+  #   image: adminer
+  #   restart: always
   #   ports:
-  #     - "25672:15672"
-  #     - "56720:5672"
+  #     - 8888:8080      
+      
+  redis-svc:
+    image: redis:alpine
+    ports:
+      - "63790:6379"
+  
+  rabbitmq-svc:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - "25672:15672"
+      - "56720:5672"
 
   gotem:
     image: gotem:latest
@@ -38,28 +53,13 @@ services:
       - "8080:1323"      
     depends_on:
       - mysql-svc
-      # - redis-svc
-      # - rabbitmq-svc
-    environment:
-      - MYSQL_DSN=root:root@tcp(mysql-svc:3306)/gotem_db?parseTime=true&loc=Local&autocommit=1&readTimeout=3s&writeTimeout=3s&multiStatements=true
-      # MYSQL_DSN=root:root@tcp(localhost:33060)/gotem_db?parseTime=true&loc=Local&autocommit=1&readTimeout=3s&writeTimeout=3s&multiStatements=true
-      - DEVELOPMENT_MODE=true
-      - LOG_NAME=gotem.log
-    # networks:
-    #   - app-network      
+      - redis-svc
+      - rabbitmq-svc
+   
     volumes:
       - "./:/go/src/github.com/bondhan/gotem"
-    # entrypoint: >
-    #   /bin/bash -c "
-    #    ./wait-for-it.sh -t 30 mysql-svc:33060 -- echo 'db is up';
-    #   "
-    # command: ["./wait-for-it.sh", "localhost:33060", "--", "echo", "'db is up'"]
-    # entrypoint: >
-    #   /bin/bash -c "
-    #     echo 'optimistic wait for 15 seconds'
-    #     sleep 15;
-    #   "
 
 volumes:
     mysql-data:
-      
+    postgresql:
+    postgresql_data:  
