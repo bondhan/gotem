@@ -3,6 +3,7 @@ package driver
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" //To bypass mysql error
+	_ "github.com/lib/pq"
 )
 
 // DBDriver ...

@@ -30,7 +30,11 @@ COPY --from=build-env /go/src/github.com/bondhan/gotem/gotem /app/gotem
 COPY --from=build-env /go/src/github.com/bondhan/gotem/.env /app/.env
 COPY --from=build-env /go/src/github.com/bondhan/gotem/wait-for-it.sh /app/wait-for-it.sh
 
-CMD ./wait-for-it.sh --host=db --port=3306 --timeout=60 -- ./gotem
+# for mysql
+# CMD ./wait-for-it.sh --host=mysql-svc --port=3306 --timeout=60 -- ./gotem
+
+# for postgres
+CMD ./wait-for-it.sh --host=postgres-svc --port=5432 --timeout=60 -- ./gotem
 
 EXPOSE 1323
 

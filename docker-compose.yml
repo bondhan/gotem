@@ -1,34 +1,36 @@
 version: '3'
 
 services:
-  mysql-svc:
-    image: percona:5.6
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=gotem_db
-      - MYSQL_PASSWORD=root
-    restart: always
-    volumes:
-      - "mysql-data:/var/lib/mysql"
-    ports:
-      - "33060:3306"   
-   
-  # postgres-svc:
-  #   image: postgres:12.1
-  #   restart: always
+  # mysql-svc:
+  #   image: percona:5.6
   #   environment:
-  #     - POSTGRES_USER=root
-  #     - POSTGRES_PASSWORD=root
-  #     - POSTGRES_DB=gotem_db
-  #   volumes:
-  #     - postgresql:/var/lib/postgresql
-  #     - postgresql_data:/var/lib/postgresql/data
-  
-  # adminer:
-  #   image: adminer
+  #     - MYSQL_ROOT_PASSWORD=root
+  #     - MYSQL_DATABASE=gotem_db
+  #     - MYSQL_PASSWORD=root
   #   restart: always
+  #   volumes:
+  #     - "mysql-data:/var/lib/mysql"
   #   ports:
-  #     - 8888:8080      
+  #     - "33060:3306"   
+   
+  postgres-svc:
+    image: postgres:12.1
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=gotem_db
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    ports:
+      - 54321:5432         
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080      
       
   redis-svc:
     image: redis:alpine
@@ -52,10 +54,10 @@ services:
     ports:
       - "8080:1323"      
     depends_on:
-      - mysql-svc
-      - redis-svc
-      - rabbitmq-svc
-   
+      # - mysql-svc
+      - postgres-svc
+      # - redis-svc
+      # - rabbitmq-svc
     volumes:
       - "./:/go/src/github.com/bondhan/gotem"
 
