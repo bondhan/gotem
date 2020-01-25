@@ -1,6 +1,6 @@
 
-SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS m_country;
 
-DROP TABLE `m_country`;
+DROP INDEX IF EXISTS m_country_deleted_at;
 
-SET FOREIGN_KEY_CHECKS=1;
+DROP SEQUENCE IF EXISTS m_country_seq;

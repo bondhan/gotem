@@ -1,6 +1,4 @@
-
-SET FOREIGN_KEY_CHECKS=0;
-
-DROP TABLE `m_city`;
-
-SET FOREIGN_KEY_CHECKS=1;
+DROP TABLE IF EXISTS m_city;
+DROP SEQUENCE IF EXISTS m_city_seq;
+DROP INDEX IF EXISTS m_city_deleted_at;
+DROP INDEX IF EXISTS m_city_index_province_id;

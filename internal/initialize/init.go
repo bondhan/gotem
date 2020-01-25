@@ -13,21 +13,8 @@ func Init() {
 
 	//init the log
 	driver.NewLogDriver(os.Getenv("LOG_NAME"), log.TraceLevel).InitLog()
-
-	//init mysql database
-	// mysql := driver.NewDbDriver(os.Getenv("MYSQL_DSN"), "mysql")
-	// db, err := mysql.ConnectDatabase()
-
-	// if err != nil {
-	// 	fmt.Println(os.Getenv("MYSQL_DSN"))
-	// 	log.Error(err)
-	// 	os.Exit(-1)
-	// }
-
-	// _ = db
-
 	//init postgresql database
-	postgreDsn := "host=" + os.Getenv("host") + " port=" + os.Getenv("port") + " user=" + os.Getenv("user") + " dbname=" + os.Getenv("dbname") + " password=" + os.Getenv("password") + " sslmode=" + os.Getenv("sslmode")
+	postgreDsn := "host=" + os.Getenv("DB_HOST") + " port=" + os.Getenv("DB_PORT") + " user=" + os.Getenv("DB_USER") + " dbname=" + os.Getenv("DB_NAME") + " password=" + os.Getenv("DB_PASSWORD") + " sslmode=" + os.Getenv("DB_SSLMODE")
 	postgre := driver.NewDbDriver(postgreDsn, "postgres")
 	db, err := postgre.ConnectDatabase()
 

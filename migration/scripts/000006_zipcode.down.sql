@@ -1,6 +1,3 @@
-
-SET FOREIGN_KEY_CHECKS=0;
-
-DROP TABLE `m_zipcode`;
-
-SET FOREIGN_KEY_CHECKS=1;
+DROP TABLE IF EXISTS m_zipcode;
+DROP SEQUENCE IF EXISTS m_zipcode_seq;
+DROP INDEX IF EXISTS m_zipcode_deleted_at;

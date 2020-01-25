@@ -1,16 +1,28 @@
 # gotem
-a go template
+a (try to be complete) go template. Includes:
+- echo framework (interceptor, middleware)
+- redis 
+- rabbitmq
+- db migration
+- app server
+
+# running
+
+`docker-compose up -d`
+
+What it will do:
+ - run postgres
+ - run redis
+ - run rabbitmq
+ - apply database migration (up)
+ - run app server
 
 ## migration
 
-Migrate 1 version up <br>
-`migrate -source "file://migration/scripts" -database "mysql://root:root@tcp(localhost:3305)/gotem_db" up 1`
+if you need manual migration:
 
-Migrate 1 version down <br>
-`migrate -source "file://migration/scripts" -database "mysql://root:root@tcp(localhost:3305)/gotem_db" down 1`
+Migrate version up <br>
+`migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ up`
 
-Get migration version<br>
-`migrate -source "file://migration/scripts" -database "mysql://root:root@tcp(localhost:3305)/gotem_db" version`
-
-Force version to n<br>
-`migrate -source "file://migration/scripts" -database "mysql://root:root@tcp(localhost:3305)/gotem_db" force n`
+Migrate version down <br>
+`migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ down`

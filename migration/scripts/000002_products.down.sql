@@ -1,6 +1,11 @@
+DROP TABLE IF EXISTS m_products;
 
-SET FOREIGN_KEY_CHECKS=0;
+DROP SEQUENCE IF EXISTS m_products_seq;
 
-DROP TABLE `m_products`;
+DROP INDEX IF EXISTS m_products_deleted_at;
 
-SET FOREIGN_KEY_CHECKS=1;
+DROP TYPE IF EXISTS category;
+
+
+
+

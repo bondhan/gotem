@@ -1,6 +1,5 @@
 
-SET FOREIGN_KEY_CHECKS=0;
-
-DROP TABLE `m_province`;
-
-SET FOREIGN_KEY_CHECKS=1;
+DROP TABLE m_province;
+DROP SEQUENCE IF EXISTS m_province_seq;
+DROP INDEX IF EXISTS m_province_deleted_at;
+DROP INDEX IF EXISTS m_province_index_country_id;

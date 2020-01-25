@@ -1,6 +1,7 @@
+DROP TABLE IF EXISTS m_variants;
 
-SET FOREIGN_KEY_CHECKS=0;
+DROP SEQUENCE IF EXISTS m_variants_seq;
 
-DROP TABLE `m_variants`;
+DROP INDEX IF EXISTS m_variants_deleted_at;
 
-SET FOREIGN_KEY_CHECKS=1;
+DROP TYPE IF EXISTS size;

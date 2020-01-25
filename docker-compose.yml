@@ -1,18 +1,6 @@
 version: '3'
 
 services:
-  # mysql-svc:
-  #   image: percona:5.6
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=root
-  #     - MYSQL_DATABASE=gotem_db
-  #     - MYSQL_PASSWORD=root
-  #   restart: always
-  #   volumes:
-  #     - "mysql-data:/var/lib/mysql"
-  #   ports:
-  #     - "33060:3306"   
-   
   postgres-svc:
     image: postgres:12.1
     restart: always
@@ -46,22 +34,35 @@ services:
       - "25672:15672"
       - "56720:5672"
 
+  migrate:
+    image: migrate:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-migration
+    command: ["/bin/bash", "-c", "/bin/migrate -database postgres://root:root@postgres-svc:5432/gotem_db?sslmode=disable -path /migration/scripts up"]
+    volumes:
+      - ./migration/scripts:/migration/scripts
+    depends_on:
+      - postgres-svc
+      
   gotem:
     image: gotem:latest
-    build: .
+    env_file:
+      - .env
+    build: 
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - ./.env
     ports:
       - "8080:1323"      
     depends_on:
-      # - mysql-svc
-      - postgres-svc
-      # - redis-svc
-      # - rabbitmq-svc
+      - migrate
+      - redis-svc
+      - rabbitmq-svc
     volumes:
       - "./:/go/src/github.com/bondhan/gotem"
-
+     
 volumes:
-    mysql-data:
     postgresql:
     postgresql_data:  
