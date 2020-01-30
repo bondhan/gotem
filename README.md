@@ -21,8 +21,17 @@ What it will do:
 
 if you need manual migration:
 
-Migrate version up <br>
+- Migrate version up <br>
 `migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ up`
 
-Migrate version down <br>
+- Migrate version down <br>
 `migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ down`
+
+## healthcheck
+
+- Get the container ID from gotem app:<br>
+`bondhan@syuhada:~/go/src/github.com/bondhan/gotem$ docker ps -aqf "name=gotem_gotem"`<br>
+`c33e4831e74d`
+
+- Inspect the health status:<br>
+`docker inspect c33 | jq '.[].State.Health'`
