@@ -45,29 +45,29 @@ services:
     depends_on:
       - postgres-svc
       
-  gotem:
-    image: gotem:latest
-    env_file:
-      - .env
-    healthcheck:
-      test: "${DOCKER_HEALTHCHECK_TEST:-curl gotem:1323/ping}"
-      interval: "60s"
-      timeout: "3s"
-      start_period: "5s"
-      retries: 3
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    env_file:
-      - ./.env
-    ports:
-      - "8080:1323"      
-    depends_on:
-      - migrate
-      - redis-svc
-      - rabbitmq-svc
-    volumes:
-      - "./:/go/src/github.com/bondhan/gotem"
+  # gotem:
+  #   image: gotem:latest
+  #   env_file:
+  #     - .env
+  #   healthcheck:
+  #     test: "${DOCKER_HEALTHCHECK_TEST:-curl gotem:1323/ping}"
+  #     interval: "60s"
+  #     timeout: "3s"
+  #     start_period: "5s"
+  #     retries: 3
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - ./.env
+  #   ports:
+  #     - "8080:1323"      
+  #   depends_on:
+  #     - migrate
+  #     - redis-svc
+  #     - rabbitmq-svc
+  #   volumes:
+  #     - "./:/go/src/github.com/bondhan/gotem"
      
 volumes:
     postgresql:
