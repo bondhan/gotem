@@ -10,7 +10,7 @@ CREATE TABLE m_products (
   category category NOT NULL,
   variant_id int check (variant_id > 0) NOT NULL,
   price DECIMAL(14, 2) DEFAULT NULL,
-  "desc" text DEFAULT NULL,
+  description text DEFAULT NULL,
   quantity int DEFAULT NULL,
   PRIMARY KEY (id),
   CONSTRAINT fk_m_products_variant_id FOREIGN KEY (variant_id) REFERENCES m_variants (id) ON DELETE RESTRICT ON UPDATE CASCADE

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/bondhan/gotem/models/db/dbmodel"
+	dbmodel "github.com/bondhan/gotem/models/db"
 	"github.com/jinzhu/gorm"
 )
 
