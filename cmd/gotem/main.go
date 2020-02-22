@@ -3,13 +3,17 @@ package main
 import (
 	"net/http"
 
-	"github.com/bondhan/gotem/internal/initialize"
+	"github.com/bondhan/gotem/manager"
+
+	"github.com/bondhan/gotem/mockup"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/labstack/echo"
 )
 
 func main() {
-	initialize.Init()
+	manager.GetContainer()
+
+	mockup.DoPopulateData()
 
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {

@@ -1,4 +1,0 @@
-{"level":"error","msg":"invalid database source","time":"20 Jan 20 21:07 WIB"}
-{"level":"error","msg":"invalid database source","time":"20 Jan 20 21:08 WIB"}
-{"level":"error","msg":"dial tcp 127.0.0.1:3306: connect: connection refused","time":"20 Jan 20 21:08 WIB"}
-{"level":"error","msg":"dial tcp 127.0.0.1:3306: connect: connection refused","time":"20 Jan 20 22:11 WIB"}
