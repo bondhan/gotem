@@ -5,7 +5,7 @@ CREATE TABLE m_country (
   created_at timestamp(0) NULL DEFAULT NULL,
   updated_at timestamp(0) NULL DEFAULT NULL,
   deleted_at timestamp(0) NULL DEFAULT NULL,
-  country_name varchar(6) NOT NULL,
+  country_name varchar(255) NOT NULL,
   country_code varchar(6) NOT NULL,
   PRIMARY KEY (id)
 );

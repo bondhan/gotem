@@ -12,7 +12,6 @@ import (
 
 func main() {
 	manager.GetContainer()
-
 	mockup.DoPopulateData()
 
 	e := echo.New()

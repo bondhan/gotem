@@ -27,6 +27,8 @@ func buildContainer() *dig.Container {
 
 	container.Provide(repository.NewBuyerRepository)
 	container.Provide(repository.NewProductsRepository)
+	container.Provide(repository.NewCountryRepository)
+	container.Provide(repository.NewProvinceRepository)
 
 	container.Provide(dbservice.NewInventoryService)
 

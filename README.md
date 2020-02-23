@@ -8,7 +8,12 @@ a (try to be complete) go template. Includes:
 
 # running
 
-`docker-compose up -d`
+make the db persistence:
+- `docker volume create --name=postgresql`
+- `docker volume create --name=postgresql_data`
+
+starting the service as service:
+- `docker-compose up -d`
 
 What it will do:
  - run postgres
