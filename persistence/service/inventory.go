@@ -4,17 +4,19 @@ import (
 	"github.com/bondhan/gotem/persistence/repository"
 )
 
+// InventoryService ...
 type InventoryService interface {
 }
 
 type inventoryService struct {
-	buyerRepo   *repository.BuyerRepository
 	productRepo *repository.ProductsRepository
+	variantRepo *repository.VariantsRepository
 }
 
-func NewInventoryService(buyerRepo *repository.BuyerRepository, productRepo *repository.ProductsRepository) InventoryService {
+// NewInventoryService ..
+func NewInventoryService(variantRepo *repository.VariantsRepository, productRepo *repository.ProductsRepository) InventoryService {
 	return &inventoryService{
-		buyerRepo:   buyerRepo,
+		variantRepo: variantRepo,
 		productRepo: productRepo,
 	}
 }

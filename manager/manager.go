@@ -25,10 +25,15 @@ func buildContainer() *dig.Container {
 	container.Provide(config.NewLogConfig)
 	container.Provide(config.NewDbConfig)
 
-	container.Provide(repository.NewBuyerRepository)
 	container.Provide(repository.NewProductsRepository)
 	container.Provide(repository.NewCountryRepository)
 	container.Provide(repository.NewProvinceRepository)
+	container.Provide(repository.NewCityRepository)
+	container.Provide(repository.NewZipCodeRepository)
+	container.Provide(repository.NewBuyerRepository)
+	container.Provide(repository.NewSellerRepository)
+	container.Provide(repository.NewVariantsRepository)
+	container.Provide(repository.NewProductsRepository)
 
 	container.Provide(dbservice.NewInventoryService)
 

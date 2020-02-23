@@ -7,7 +7,8 @@ CREATE TABLE m_country (
   deleted_at timestamp(0) NULL DEFAULT NULL,
   country_name varchar(255) NOT NULL,
   country_code varchar(6) NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE(country_code)
 );
 
 CREATE INDEX m_country_deleted_at ON m_country (deleted_at);

@@ -18,6 +18,7 @@ var (
 // City ...
 type City struct {
 	gorm.Model
+	CityCode   string `gorm:"column:city_code" json:"city_code"`
 	CityName   string `gorm:"column:city_name" json:"city_name"`
 	ProvinceID uint   `gorm:"column:province_id" json:"province_id"`
 }

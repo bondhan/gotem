@@ -9,6 +9,7 @@ import (
 // ProvinceRepository ...
 type ProvinceRepository interface {
 	InsertProvince(provinceCode string, provinceName string, countryCode string) error
+	GetAProvinceByProvinceCode(provinceCode string) (province domain.Province, err error)
 }
 
 type provinceRepository struct {
@@ -36,4 +37,9 @@ func (p *provinceRepository) InsertProvince(provinceCode string, provinceName st
 	p.db.Save(&province)
 
 	return nil
+}
+
+func (p *provinceRepository) GetAProvinceByProvinceCode(provinceCode string) (province domain.Province, err error) {
+	err = p.db.Where("province_code = ?", provinceCode).First(&province).Error
+	return
 }

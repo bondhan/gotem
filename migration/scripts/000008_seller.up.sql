@@ -6,9 +6,11 @@ CREATE TABLE m_seller (
   updated_at timestamp(0) NULL DEFAULT NULL,
   deleted_at timestamp(0) NULL DEFAULT NULL,
   name varchar(255) NOT NULL,
+  mobile varchar(20) NOT NULL,
+  email varchar(255) DEFAULT NULL,
   address varchar(255) DEFAULT NULL,
   zipcode_id int check (zipcode_id > 0) NULL,
-  PRIMARY KEY (id) ,
+  PRIMARY KEY (id),
   CONSTRAINT fk_m_seller_zip_code FOREIGN KEY (zipcode_id) REFERENCES m_zipcode (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 

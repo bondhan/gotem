@@ -7,6 +7,7 @@ import (
 
 // ProductsRepository ...
 type ProductsRepository interface {
+	AddAproduct(product domain.Products) error
 }
 
 type productsRepository struct {
@@ -20,11 +21,7 @@ func NewProductsRepository(newDB *gorm.DB) ProductsRepository {
 	}
 }
 
-func (b *productsRepository) GetABuyer(id uint) (domain.Products, error) {
-
-	var products domain.Products
-
-	err := b.db.Where("id = ?", id).First(&products).Error
-
-	return products, err
+func (d *productsRepository) AddAproduct(product domain.Products) error {
+	err := d.db.Create(&product).Error
+	return err
 }

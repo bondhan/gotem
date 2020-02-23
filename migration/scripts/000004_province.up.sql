@@ -6,10 +6,11 @@ CREATE TABLE m_province (
   updated_at timestamp(0) NULL DEFAULT NULL,
   deleted_at timestamp(0) NULL DEFAULT NULL,
   province_name varchar(255) NOT NULL,
-  province_code varchar(3) NOT NULL,
+  province_code varchar(6) NOT NULL,
   country_id int check (country_id > 0) NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fk_m_province FOREIGN KEY (country_id) REFERENCES m_country (id) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT fk_m_province FOREIGN KEY (country_id) REFERENCES m_country (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  UNIQUE(province_code, country_id)
 );
 
 CREATE INDEX m_province_deleted_at ON m_province (deleted_at);

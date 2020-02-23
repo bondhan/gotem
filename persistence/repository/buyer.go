@@ -8,6 +8,7 @@ import (
 // BuyerRepository ...
 type BuyerRepository interface {
 	GetABuyer(id uint) (domain.Buyer, error)
+	InsertABuyer(buyer domain.Buyer) error
 }
 
 type buyerRepository struct {
@@ -26,4 +27,10 @@ func (b *buyerRepository) GetABuyer(id uint) (domain.Buyer, error) {
 	err := b.db.Where("id = ?", id).First(&buyer).Error
 
 	return buyer, err
+}
+
+func (b *buyerRepository) InsertABuyer(buyer domain.Buyer) error {
+	err := b.db.Create(&buyer).Error
+
+	return err
 }
