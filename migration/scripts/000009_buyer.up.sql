@@ -5,15 +5,9 @@ CREATE TABLE m_buyer (
   created_at timestamp(0) NULL DEFAULT NULL,
   updated_at timestamp(0) NULL DEFAULT NULL,
   deleted_at timestamp(0) NULL DEFAULT NULL,
-  name varchar(255) NOT NULL,
-  mobile varchar(20) NOT NULL,
-  email varchar(255) DEFAULT NULL,
-  address varchar(255) DEFAULT NULL,
-  zipcode_id int check (zipcode_id > 0) NULL,
+  user_id int check (user_id > 0) NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fk_m_buyer_zip_code FOREIGN KEY (zipcode_id) REFERENCES m_zipcode (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE(mobile),
-  UNIQUE(email)
+  CONSTRAINT fk_m_buyer_user_id FOREIGN KEY (user_id) REFERENCES m_user (id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ;
 
 CREATE INDEX m_buyer_deleted_at ON m_buyer (deleted_at);

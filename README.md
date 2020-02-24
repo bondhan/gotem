@@ -26,11 +26,13 @@ What it will do:
 
 if you need manual migration:
 
-- Migrate version up <br>
-`migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ up`
+- Migrate version up: <br>
+    `migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ up`
 
-- Migrate version down <br>
-`migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ down`
+- Migrate version down: <br>
+    `migrate -database "postgres://root:root@localhost:54321/gotem_db?sslmode=disable" -path migration/scripts/ down`
+
+- 
 
 ## healthcheck
 
