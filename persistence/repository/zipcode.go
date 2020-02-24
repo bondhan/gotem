@@ -7,7 +7,8 @@ import (
 
 // ZipCodeRepository ...
 type ZipCodeRepository interface {
-	InsertZipCode(zipCode domain.ZipCode)
+	GetZipCode(zipCode string) (zipcode domain.ZipCode, err error)
+	InsertZipCode(zipCode domain.ZipCode) error
 }
 
 type zipCodeRepository struct {
@@ -22,7 +23,14 @@ func NewZipCodeRepository(newDB *gorm.DB, cityRepo CityRepository) ZipCodeReposi
 	}
 }
 
-func (c *zipCodeRepository) InsertZipCode(zipCode domain.ZipCode) {
+func (c *zipCodeRepository) InsertZipCode(zipCode domain.ZipCode) error {
 
-	c.db.Create(&zipCode)
+	return c.db.Create(&zipCode).Error
+}
+
+func (c *zipCodeRepository) GetZipCode(zipCode string) (zipcode domain.ZipCode, err error) {
+
+	err = c.db.Where("zipcode = ?", zipCode).First(&zipcode).Error
+
+	return
 }

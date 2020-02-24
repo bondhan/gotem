@@ -18,7 +18,7 @@ var (
 // ZipCode ...
 type ZipCode struct {
 	gorm.Model
-	ZipCode string `gorm:"column:zip_code" json:"zip_code"`
+	ZipCode string `gorm:"column:zipcode" json:"zipcode"`
 	CityID  uint   `gorm:"column:city_id" json:"city_id"`
 }
 

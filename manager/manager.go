@@ -30,6 +30,7 @@ func buildContainer() *dig.Container {
 	container.Provide(repository.NewProvinceRepository)
 	container.Provide(repository.NewCityRepository)
 	container.Provide(repository.NewZipCodeRepository)
+	container.Provide(repository.NewUserRepository)
 	container.Provide(repository.NewBuyerRepository)
 	container.Provide(repository.NewSellerRepository)
 	container.Provide(repository.NewVariantsRepository)

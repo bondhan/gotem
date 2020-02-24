@@ -81,29 +81,76 @@ func insertZipCode() {
 
 // insertBuyer ...
 func insertBuyer() {
-	manager.GetContainer().Invoke(func(b repository.BuyerRepository) {
-		buyer := domain.Buyer{
+	manager.GetContainer().Invoke(func(b repository.BuyerRepository, u repository.UserRepository, z repository.ZipCodeRepository) {
+		zc1, err := z.GetZipCode("12345")
+		if err != nil {
+			log.Error(err)
+		}
+
+		user1 := domain.User{
 			Name:      "Bondhan Novandy",
 			Mobile:    "1234567890",
 			Email:     "bondhan@github.com",
 			Address:   "RT 5 RW 3 No 10 Jalan Cinta",
-			ZipCodeID: 1,
+			ZipCodeID: zc1.ID,
 		}
-		b.InsertABuyer(buyer)
+
+		err = u.InsertAUser(user1)
+		if err != nil {
+			log.Error(err)
+		}
+
+		bondhan, err := u.GetAUserFromMobile("1234567890")
+		if err != nil {
+			log.Error(err)
+		}
+
+		buyer := domain.Buyer{
+			UserID: bondhan.ID,
+		}
+
+		err = b.InsertABuyer(buyer)
+		if err != nil {
+			log.Error(err)
+		}
 	})
 }
 
 // insertSeller ...
 func insertSeller() {
-	manager.GetContainer().Invoke(func(s repository.SellerRepository) {
-		seller := domain.Seller{
+	manager.GetContainer().Invoke(func(s repository.SellerRepository, u repository.UserRepository, z repository.ZipCodeRepository) {
+
+		zc2, err := z.GetZipCode("12346")
+		if err != nil {
+			log.Error(err)
+		}
+
+		user2 := domain.User{
 			Name:      "Muhammad Hisyam",
 			Mobile:    "32947384732",
 			Email:     "hisyam@github.com",
 			Address:   "RT 11 RW 13 No 110 Jalan Keadilan",
-			ZipCodeID: 2,
+			ZipCodeID: zc2.ID,
 		}
-		s.InsertASeller(seller)
+
+		err = u.InsertAUser(user2)
+		if err != nil {
+			log.Error(err)
+		}
+
+		hisyam, err := u.GetAUserFromMobile("32947384732")
+		if err != nil {
+			log.Error(err)
+		}
+
+		seller := domain.Seller{
+			UserID: hisyam.ID,
+		}
+
+		err = s.InsertASeller(seller)
+		if err != nil {
+			log.Error(err)
+		}
 	})
 }
 

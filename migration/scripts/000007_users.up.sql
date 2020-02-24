@@ -13,7 +13,7 @@ CREATE TABLE m_user (
   password varchar(255) NOT NULL,
   salt varchar(255) NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fk_m_user_zip_code FOREIGN KEY (zipcode_id) REFERENCES m_zipcode (id) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT fk_m_user_zipcode_id FOREIGN KEY (zipcode_id) REFERENCES m_zipcode (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE INDEX m_user_deleted_at ON m_user (deleted_at);
