@@ -15,35 +15,67 @@ func insertCountry() {
 }
 
 func insertProvince() {
-	manager.GetContainer().Invoke(func(c repository.ProvinceRepository) {
-		c.InsertProvince("621", "DKI Jakarta", "62")
-		c.InsertProvince("622", "Jawa Barat", "62")
-		c.InsertProvince("623", "Jawa Tengah", "62")
+	manager.GetContainer().Invoke(func(p repository.ProvinceRepository, c repository.CountryRepository) {
+		countryIna, err := c.GetACountryByCountryCode("62")
+		if err != nil {
+			log.Error(err)
+		}
 
-		c.InsertProvince("9661", "Eastern", "966")
-		c.InsertProvince("9662", "Central", "966")
-		c.InsertProvince("9663", "West", "966")
+		p.InsertProvince(domain.Province{ProvinceCode: "621", ProvinceName: "DKI Jakarta", CountryID: countryIna.ID})
+		p.InsertProvince(domain.Province{ProvinceCode: "622", ProvinceName: "Jawa Barat", CountryID: countryIna.ID})
+		p.InsertProvince(domain.Province{ProvinceCode: "623", ProvinceName: "Jawa Tengah", CountryID: countryIna.ID})
+
+		countryKsa, err := c.GetACountryByCountryCode("966")
+		if err != nil {
+			log.Error(err)
+		}
+		p.InsertProvince(domain.Province{ProvinceCode: "9661", ProvinceName: "Eastern", CountryID: countryKsa.ID})
+		p.InsertProvince(domain.Province{ProvinceCode: "9662", ProvinceName: "Central", CountryID: countryKsa.ID})
+		p.InsertProvince(domain.Province{ProvinceCode: "9663", ProvinceName: "West", CountryID: countryKsa.ID})
+
 	})
 }
 
 func insertCity() {
-	manager.GetContainer().Invoke(func(c repository.CityRepository) {
-		c.InsertCity("22", "Jakarta Selatan", "621")
-		c.InsertCity("23", "Jakarta Barat", "621")
-		c.InsertCity("24", "Jakarta Timur", "621")
-		c.InsertCity("25", "Jakarta Utara", "621")
+	manager.GetContainer().Invoke(func(c repository.CityRepository, p repository.ProvinceRepository) {
+		provJkt, err := p.GetAProvinceByProvinceCode("621")
+		if err != nil {
+			log.Error(err)
+		}
+		c.InsertCity(domain.City{CityCode: "22", CityName: "Jakarta Selatan", ProvinceID: provJkt.ID})
+		c.InsertCity(domain.City{CityCode: "23", CityName: "Jakarta Barat", ProvinceID: provJkt.ID})
+		c.InsertCity(domain.City{CityCode: "24", CityName: "Jakarta Timur", ProvinceID: provJkt.ID})
+		c.InsertCity(domain.City{CityCode: "25", CityName: "Jakarta Utara", ProvinceID: provJkt.ID})
 
-		c.InsertCity("111", "Dammam", "9661")
-		c.InsertCity("112", "Jakarta Barat", "9661")
+		provSaudi, err := p.GetAProvinceByProvinceCode("9661")
+		if err != nil {
+			log.Error(err)
+		}
 
+		c.InsertCity(domain.City{CityCode: "111", CityName: "Dammam", ProvinceID: provSaudi.ID})
+		c.InsertCity(domain.City{CityCode: "112", CityName: "Khobar", ProvinceID: provSaudi.ID})
 	})
 }
 
 func insertZipCode() {
-	manager.GetContainer().Invoke(func(z repository.ZipCodeRepository) {
-		z.InsertZipCode("12345", "22")
-		z.InsertZipCode("12346", "23")
-		z.InsertZipCode("12347", "24")
+	manager.GetContainer().Invoke(func(z repository.ZipCodeRepository, c repository.CityRepository) {
+		c22, err := c.GetACityByCityCode("22")
+		if err != nil {
+			log.Error(err)
+		}
+		z.InsertZipCode(domain.ZipCode{ZipCode: "12345", CityID: c22.ID})
+
+		c23, err := c.GetACityByCityCode("23")
+		if err != nil {
+			log.Error(err)
+		}
+		z.InsertZipCode(domain.ZipCode{ZipCode: "12346", CityID: c23.ID})
+
+		c24, err := c.GetACityByCityCode("24")
+		if err != nil {
+			log.Error(err)
+		}
+		z.InsertZipCode(domain.ZipCode{ZipCode: "12347", CityID: c24.ID})
 	})
 }
 

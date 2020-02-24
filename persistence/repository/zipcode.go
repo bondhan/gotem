@@ -3,12 +3,11 @@ package repository
 import (
 	"github.com/bondhan/gotem/persistence/domain"
 	"github.com/jinzhu/gorm"
-	log "github.com/sirupsen/logrus"
 )
 
 // ZipCodeRepository ...
 type ZipCodeRepository interface {
-	InsertZipCode(zipCode string, cityCode string)
+	InsertZipCode(zipCode domain.ZipCode)
 }
 
 type zipCodeRepository struct {
@@ -19,18 +18,11 @@ type zipCodeRepository struct {
 //NewZipCodeRepository ...
 func NewZipCodeRepository(newDB *gorm.DB, cityRepo CityRepository) ZipCodeRepository {
 	return &zipCodeRepository{
-		cityRepo: cityRepo,
-		db:       newDB,
+		db: newDB,
 	}
 }
 
-func (c *zipCodeRepository) InsertZipCode(zipCode string, cityCode string) {
-	city, err := c.cityRepo.GetACityByCityCode(cityCode)
-	if err != nil {
-		log.Error(err)
-		return
-	}
+func (c *zipCodeRepository) InsertZipCode(zipCode domain.ZipCode) {
 
-	zipcode := domain.ZipCode{ZipCode: zipCode, CityID: city.ID}
-	c.db.Create(&zipcode)
+	c.db.Create(&zipCode)
 }
