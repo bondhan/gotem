@@ -8,19 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// NewLogConfig ...
-func NewLogConfig() *driver.LogDriver {
-	//init the log
-	_, isProd := os.LookupEnv("PRODUCTION_ENV")
-	if isProd {
-		driver.NewLogDriver(os.Getenv("LOG_NAME"), log.ErrorLevel).InitLog()
-	} else {
-		driver.NewLogDriver(os.Getenv("LOG_NAME"), log.TraceLevel).InitLog()
-	}
-
-	return &driver.LogDriver{}
-}
-
 // NewDbConfig ...
 func NewDbConfig() *gorm.DB {
 	//init postgresql database

@@ -1,11 +1,14 @@
 package manager
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/bondhan/gotem/config"
+	"github.com/bondhan/gotem/internal/errorhandler"
 	"github.com/bondhan/gotem/persistence/repository"
 	dbservice "github.com/bondhan/gotem/persistence/service"
+	"github.com/labstack/gommon/log"
 	"go.uber.org/dig"
 )
 
@@ -22,7 +25,7 @@ var (
 // BuildContainer ...
 func buildContainer() *dig.Container {
 	container := dig.New()
-	container.Provide(config.NewLogConfig)
+	container.Provide(errorhandler.DoLog(log.DEBUG, errors.New("")))
 	container.Provide(config.NewDbConfig)
 
 	container.Provide(repository.NewProductsRepository)

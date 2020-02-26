@@ -18,7 +18,8 @@ func insertProvince() {
 	manager.GetContainer().Invoke(func(p repository.ProvinceRepository, c repository.CountryRepository) {
 		countryIna, err := c.GetACountryByCountryCode("62")
 		if err != nil {
-			log.Error(err)
+			errorwrapper.DBError.New(err.Error())
+			return
 		}
 
 		p.InsertProvince(domain.Province{ProvinceCode: "621", ProvinceName: "DKI Jakarta", CountryID: countryIna.ID})
