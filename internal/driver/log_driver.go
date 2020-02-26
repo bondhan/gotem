@@ -6,7 +6,6 @@ import (
 
 	"github.com/mattn/go-colorable"
 	"github.com/sirupsen/logrus"
-	"github.com/snowzach/rotatefilehook"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -14,20 +13,18 @@ import (
 
 // LogDriver ...
 type LogDriver struct {
-	logFName    string
 	level       logrus.Level
 	sugarLogger *zap.SugaredLogger
 }
 
 // NewLogDriver ...
 func NewLogDriver(filename string, level logrus.Level) *LogDriver {
-	writerSyncer := getLogWriter()
+	writerSyncer := getLogWriter(filename)
 	encoder := getEncoder()
 	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
 	logger := zap.New(core, zap.AddCaller())
 
 	return &LogDriver{
-		logFName:    filename,
 		level:       level,
 		sugarLogger: logger.Sugar(),
 	}
@@ -35,23 +32,6 @@ func NewLogDriver(filename string, level logrus.Level) *LogDriver {
 
 // InitLog ...
 func (l *LogDriver) InitLog() {
-	dt := time.Now()
-
-	rotateFileHook, err := rotatefilehook.NewRotateFileHook(rotatefilehook.RotateFileConfig{
-		Filename:   "logs/" + dt.Format("20060102") + "_" + l.logFName,
-		MaxSize:    50, // megabytes
-		MaxBackups: 3,
-		MaxAge:     28, //days
-		Level:      l.level,
-		Formatter: &logrus.JSONFormatter{
-			TimestampFormat: time.RFC822,
-		},
-	})
-
-	if err != nil {
-		logrus.Fatalf("Failed to initialize file rotate hook: %v", err)
-	}
-
 	logrus.SetLevel(l.level)
 	logrus.SetOutput(colorable.NewColorableStdout())
 	logrus.SetFormatter(&logrus.TextFormatter{
@@ -59,8 +39,6 @@ func (l *LogDriver) InitLog() {
 		FullTimestamp:   true,
 		TimestampFormat: time.RFC822,
 	})
-	logrus.AddHook(rotateFileHook)
-
 }
 
 func getEncoder() zapcore.Encoder {
@@ -70,9 +48,10 @@ func getEncoder() zapcore.Encoder {
 	return zapcore.NewConsoleEncoder(encoderConfig)
 }
 
-func getLogWriter() zapcore.WriteSyncer {
+func getLogWriter(logFName string) zapcore.WriteSyncer {
+	dt := time.Now()
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   "./test.log",
+		Filename:   "logs/" + dt.Format("20060102") + "_" + logFName,
 		MaxSize:    10,
 		MaxBackups: 5,
 		MaxAge:     30,

@@ -4,7 +4,11 @@ import (
 	"os"
 
 	"github.com/bondhan/gotem/internal/driver"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
+)
+
+var (
+	log *driver.LogDriver
 )
 
 // NewLogHandler creating log handler
@@ -12,17 +16,19 @@ func NewLogHandler() error {
 	//init the log
 	_, isProd := os.LookupEnv("PRODUCTION_ENV")
 	if isProd {
-		driver.NewLogDriver(os.Getenv("LOG_NAME"), log.ErrorLevel).InitLog()
+		log = driver.NewLogDriver(os.Getenv("LOG_NAME"), logrus.ErrorLevel)
+
 	} else {
-		driver.NewLogDriver(os.Getenv("LOG_NAME"), log.TraceLevel).InitLog()
+		log = driver.NewLogDriver(os.Getenv("LOG_NAME"), logrus.TraceLevel)
+
 	}
+	log.InitLog()
 
 	return nil
 }
 
-//
-func DoLog(level log.Level, err error) {
-	if err != nil {
-		log.Debug(err)
+func DoLog(level logrus.Level, err error) {
+	switch level {
 	}
+
 }
