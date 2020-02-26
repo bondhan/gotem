@@ -1,6 +1,7 @@
 package mockup
 
 import (
+	"github.com/bondhan/gotem/internal/errorhandler"
 	"github.com/bondhan/gotem/manager"
 	"github.com/bondhan/gotem/persistence/domain"
 	"github.com/bondhan/gotem/persistence/repository"
@@ -18,7 +19,7 @@ func insertProvince() {
 	manager.GetContainer().Invoke(func(p repository.ProvinceRepository, c repository.CountryRepository) {
 		countryIna, err := c.GetACountryByCountryCode("62")
 		if err != nil {
-			errorwrapper.DBError.New(err.Error())
+			errorhandler.DBError.New(err.Error())
 			return
 		}
 

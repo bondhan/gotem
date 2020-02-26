@@ -2,17 +2,13 @@ package errorhandler
 
 import (
 	"os"
-	"sync"
 
 	"github.com/bondhan/gotem/internal/driver"
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	once sync.Once
-)
-
-func newLogHandler() {
+// NewLogHandler creating log handler
+func NewLogHandler() error {
 	//init the log
 	_, isProd := os.LookupEnv("PRODUCTION_ENV")
 	if isProd {
@@ -20,15 +16,13 @@ func newLogHandler() {
 	} else {
 		driver.NewLogDriver(os.Getenv("LOG_NAME"), log.TraceLevel).InitLog()
 	}
+
+	return nil
 }
 
+//
 func DoLog(level log.Level, err error) {
-	once.Do(func() {
-		newLogHandler()
-	})
-
 	if err != nil {
 		log.Debug(err)
 	}
-
 }
