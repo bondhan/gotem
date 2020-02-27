@@ -5,7 +5,7 @@ import (
 	"github.com/bondhan/gotem/manager"
 	"github.com/bondhan/gotem/persistence/domain"
 	"github.com/bondhan/gotem/persistence/repository"
-	log "github.com/sirupsen/logrus"
+	"github.com/jinzhu/gorm"
 )
 
 func insertCountry() {
@@ -19,7 +19,9 @@ func insertProvince() {
 	manager.GetContainer().Invoke(func(p repository.ProvinceRepository, c repository.CountryRepository) {
 		countryIna, err := c.GetACountryByCountryCode("62")
 		if err != nil {
-			errorhandler.DBError.New(err.Error())
+			if gorm.IsRecordNotFoundError(err) {
+				errorhandler.DBError.Newf("Country 62 not found, err:", err)
+			}
 			return
 		}
 
@@ -29,7 +31,7 @@ func insertProvince() {
 
 		countryKsa, err := c.GetACountryByCountryCode("966")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 		p.InsertProvince(domain.Province{ProvinceCode: "9661", ProvinceName: "Eastern", CountryID: countryKsa.ID})
 		p.InsertProvince(domain.Province{ProvinceCode: "9662", ProvinceName: "Central", CountryID: countryKsa.ID})
@@ -42,7 +44,7 @@ func insertCity() {
 	manager.GetContainer().Invoke(func(c repository.CityRepository, p repository.ProvinceRepository) {
 		provJkt, err := p.GetAProvinceByProvinceCode("621")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 		c.InsertCity(domain.City{CityCode: "22", CityName: "Jakarta Selatan", ProvinceID: provJkt.ID})
 		c.InsertCity(domain.City{CityCode: "23", CityName: "Jakarta Barat", ProvinceID: provJkt.ID})
@@ -51,7 +53,7 @@ func insertCity() {
 
 		provSaudi, err := p.GetAProvinceByProvinceCode("9661")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		c.InsertCity(domain.City{CityCode: "111", CityName: "Dammam", ProvinceID: provSaudi.ID})
@@ -63,19 +65,19 @@ func insertZipCode() {
 	manager.GetContainer().Invoke(func(z repository.ZipCodeRepository, c repository.CityRepository) {
 		c22, err := c.GetACityByCityCode("22")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 		z.InsertZipCode(domain.ZipCode{ZipCode: "12345", CityID: c22.ID})
 
 		c23, err := c.GetACityByCityCode("23")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 		z.InsertZipCode(domain.ZipCode{ZipCode: "12346", CityID: c23.ID})
 
 		c24, err := c.GetACityByCityCode("24")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 		z.InsertZipCode(domain.ZipCode{ZipCode: "12347", CityID: c24.ID})
 	})
@@ -86,7 +88,7 @@ func insertBuyer() {
 	manager.GetContainer().Invoke(func(b repository.BuyerRepository, u repository.UserRepository, z repository.ZipCodeRepository) {
 		zc1, err := z.GetZipCode("12345")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		user1 := domain.User{
@@ -99,12 +101,12 @@ func insertBuyer() {
 
 		err = u.InsertAUser(user1)
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		bondhan, err := u.GetAUserFromMobile("1234567890")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		buyer := domain.Buyer{
@@ -113,7 +115,7 @@ func insertBuyer() {
 
 		err = b.InsertABuyer(buyer)
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 	})
 }
@@ -124,7 +126,7 @@ func insertSeller() {
 
 		zc2, err := z.GetZipCode("12346")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		user2 := domain.User{
@@ -137,12 +139,12 @@ func insertSeller() {
 
 		err = u.InsertAUser(user2)
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		hisyam, err := u.GetAUserFromMobile("32947384732")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		seller := domain.Seller{
@@ -151,7 +153,7 @@ func insertSeller() {
 
 		err = s.InsertASeller(seller)
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 	})
 }
@@ -172,7 +174,7 @@ func insertProducts() {
 	manager.GetContainer().Invoke(func(productsRepo repository.ProductsRepository, variantRepo repository.VariantsRepository) {
 		variants, err := variantRepo.GetAVariantFromSize("XL")
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 
 		products := domain.Products{
@@ -186,7 +188,7 @@ func insertProducts() {
 
 		err = productsRepo.AddAproduct(products)
 		if err != nil {
-			log.Error(err)
+			// log.Error(err)
 		}
 	})
 }

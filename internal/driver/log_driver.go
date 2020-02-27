@@ -1,7 +1,6 @@
 package driver
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/mattn/go-colorable"
@@ -13,20 +12,16 @@ import (
 
 // LogDriver ...
 type LogDriver struct {
+	filename    string
 	level       logrus.Level
 	sugarLogger *zap.SugaredLogger
 }
 
 // NewLogDriver ...
 func NewLogDriver(filename string, level logrus.Level) *LogDriver {
-	writerSyncer := getLogWriter(filename)
-	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
-	logger := zap.New(core, zap.AddCaller())
-
 	return &LogDriver{
-		level:       level,
-		sugarLogger: logger.Sugar(),
+		filename: filename,
+		level:    level,
 	}
 }
 
@@ -39,6 +34,11 @@ func (l *LogDriver) InitLog() {
 		FullTimestamp:   true,
 		TimestampFormat: time.RFC822,
 	})
+
+	writerSyncer := getLogWriter(l.filename)
+	encoder := getEncoder()
+	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
+	l.sugarLogger = zap.New(core, zap.AddCaller()).Sugar()
 }
 
 func getEncoder() zapcore.Encoder {
@@ -60,13 +60,32 @@ func getLogWriter(logFName string) zapcore.WriteSyncer {
 	return zapcore.AddSync(lumberJackLogger)
 }
 
-func (l *LogDriver) SimpleHttpGet(url string) {
-	l.sugarLogger.Debugf("Trying to hit GET request for %s", url)
-	resp, err := http.Get(url)
+func (l *LogDriver) Debug(err error) {
+	l.Debug(err)
+
+	// post to db or es
+	// if fail then write to file
 	if err != nil {
-		l.sugarLogger.Errorf("Error fetching URL %s : Error = %s", url, err)
-	} else {
-		l.sugarLogger.Infof("Success! statusCode = %s for URL %s", resp.Status, url)
-		resp.Body.Close()
+		l.sugarLogger.Debug(err)
+	}
+}
+
+func (l *LogDriver) Error(err error) {
+	l.Error(err)
+
+	// post to db or es
+	// if fail then write to file
+	if err != nil {
+		l.sugarLogger.Error(err)
+	}
+}
+
+func (l *LogDriver) Warn(err error) {
+	l.Warn(err)
+
+	// post to db or es
+	// if fail then write to file
+	if err != nil {
+		l.sugarLogger.Warn(err)
 	}
 }

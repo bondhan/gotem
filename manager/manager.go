@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/bondhan/gotem/config"
-	"github.com/bondhan/gotem/internal/errorhandler"
+	"github.com/bondhan/gotem/internal/driver"
 	"github.com/bondhan/gotem/persistence/repository"
 	dbservice "github.com/bondhan/gotem/persistence/service"
 	"go.uber.org/dig"
@@ -23,7 +23,7 @@ var (
 // BuildContainer ...
 func buildContainer() *dig.Container {
 	container := dig.New()
-	container.Provide(errorhandler.NewLogHandler())
+	container.Provide(driver.NewLogDriver)
 	container.Provide(config.NewDbConfig)
 
 	container.Provide(repository.NewProductsRepository)
